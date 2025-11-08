@@ -1,3 +1,3 @@
 # hbd
 
-## to celebrate closed ones' birthdays!
+to celebrate closed ones' birthdays! 🎂🎉🥳🎈🎁

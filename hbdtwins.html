@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HAPPY 21 BDAY!</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1021;
+    --cake:#7fcf6b;
+    --cake-dark:#63a854;
+    --cream:#fff6e7;
+    --cream2:#e7eabf;
+    --text:#fff;
+    --shadow: rgba(0,0,0,.25);
+    --accent:#ffd166;
+  }
+
+  *{ box-sizing:border-box }
+  body{
+    margin:0; padding:0; min-height:100svh; background:var(--bg); color:var(--text);
+    display:grid; place-items:center; font-family: Inter, system-ui, -apple-system, "Segoe UI", Arial;
+    overflow-x:hidden;
+  }
+
+  /* ==== Responsive canvas (everything positions relative to this box) ==== */
+  .card{
+    position:relative;
+    width:min(900px, 92vw);
+    aspect-ratio: 16 / 12;              /* keeps proportions across screens */
+    overflow:visible;
+  }
+
+  /* Headline */
+  h1{
+    position:absolute; left:50%; top:12%;
+    transform:translateX(-50%);
+    margin:0;
+    text-align:center;
+    font-weight:800;
+    line-height:1.1;
+    font-size: clamp(20px, 3.8vw, 44px);
+    text-shadow: 0 6px 18px #0006;
+  }
+
+  .note{
+  position:absolute;
+  bottom:12%;
+  left:50%;
+  transform:translateX(-50%);
+  text-align:center;
+  font-size:clamp(10px, 2.5vw, 14px);
+  opacity:0.85;
+  color:#fff;
+  line-height:1.3;
+  pointer-events:none; /* so clicking still hits smiskis */
+}
+.note{
+  position:absolute;
+  bottom:10%;
+  left:50%;
+  transform:translateX(-50%);
+  text-align:center;
+  font-size:clamp(10px, 2.5vw, 14px);
+  opacity:0.85;
+  color:#fff;
+  line-height:1.3;
+  pointer-events:none; /* so clicking still hits smiskis */
+}
+
+  /* ==== Smiski (wrapped so sparkles & clicks don’t block image) ==== */
+  .smiski-wrap{
+    position:absolute; bottom:20%;
+    width:22%; height:auto;             /* scales with canvas */
+    display:flex; justify-content:center; align-items:flex-end;
+    pointer-events:auto; z-index:5;
+  }
+  #asterWrap{ left:31.9%; }
+  #avarielleWrap{ right:31.9%; bottom:20.5%;}
+
+  .smiski{ width:100%; height:auto; object-fit:contain; pointer-events:none; }
+
+  /* sparkles */
+  .sparkles{
+    position:absolute; inset:-20%; pointer-events:none; opacity:0;
+    filter: drop-shadow(0 0 6px #fff8);
+    transition: opacity .18s ease;
+  }
+  .sparkles::before,
+  .sparkles::after{
+    content:""; position:absolute; inset:0;
+    background:
+      radial-gradient(13px 13px at 40% 12%,  #fff, #fff0 60%),
+      radial-gradient(12px 12px at 55% 18%,  #fff, #fff0 60%),
+      radial-gradient(13px 13px at 68% 32%,  #fff, #fff0 60%),
+      radial-gradient(12px 12px at 76% 50%,  #fff, #fff0 60%),
+      radial-gradient(13px 13px at 68% 68%,  #fff, #fff0 60%),
+      radial-gradient(12px 12px at 55% 82%,  #fff, #fff0 60%),
+      radial-gradient(13px 13px at 40% 88%,  #fff, #fff0 60%),
+      radial-gradient(12px 12px at 25% 82%,  #fff, #fff0 60%),
+      radial-gradient(13px 13px at 12% 68%,  #fff, #fff0 60%),
+      radial-gradient(12px 12px at 4% 50%,  #fff, #fff0 60%),
+      radial-gradient(13px 13px at 12% 32%,  #fff, #fff0 60%),
+      radial-gradient(12px 12px at 25% 18%,  #fff, #fff0 60%);
+    animation: twinkle 1.2s infinite steps(2, end);
+  }
+  .sparkles::after{ transform:rotate(18deg); opacity:.9; animation-duration:1.5s }
+  .smiski-wrap:hover .sparkles,
+  .smiski-wrap:active .sparkles,
+  .smiski-wrap.glow .sparkles{ opacity:1 }
+  #asterWrap .sparkles {
+  transform: translateX(-10%);
+}
+  #avarielleWrap .sparkles {
+  transform: translateX(32%); 
+}
+
+  @keyframes twinkle{ 50%{ filter: drop-shadow(0 0 10px #fff) } }
+
+  /* ==== Cake (all in %) ==== */
+  .cake-block{
+    position:absolute; left:50%; bottom:20%;
+    transform:translateX(-50%);
+    width:66%; height:30%;
+    background: linear-gradient(#90e07e, var(--cake));
+    border-radius: 2.2vw;
+    box-shadow: inset 0 -1.4vw 0 var(--cake-dark), 0 1vw 2vw var(--shadow);
+  }
+  .cake-block::before{                /* top oval */
+    content:""; position:absolute; left:50%; top:-12%;
+    transform:translateX(-50%);
+    width:90%; height:36%;
+    background: linear-gradient(#a8ee8e, #7fcf6b);
+    border-radius: 999px / 60%;
+  }
+
+  .cake-top{
+    position:absolute; left:50%; top:-30%;
+    transform:translateX(-50%);
+    width:100%; height:100%; pointer-events:none;
+    background:
+      /* stretched U row + accents (in %) */
+  radial-gradient(1.98vw 1.62vw at 6% 40%, var(--cream) 98%, #0000),
+radial-gradient(1.26vw 1.26vw at 12% 50%, var(--cream2) 98%, #0000),
+radial-gradient(1.98vw 1.62vw at 18% 59%, var(--cream) 98%, #0000),
+radial-gradient(1.26vw 1.26vw at 24% 67%, var(--cream2) 98%, #0000),
+radial-gradient(1.98vw 1.62vw at 30% 73%, var(--cream) 98%, #0000),
+radial-gradient(1.26vw 1.26vw at 36% 70%, var(--cream2) 98%, #0000),
+radial-gradient(1.98vw 1.62vw at 42% 74%, var(--cream) 98%, #0000),
+radial-gradient(1.26vw 1.26vw at 48% 78%, var(--cream2) 98%, #0000),
+radial-gradient(1.98vw 1.62vw at 54% 80%, var(--cream) 98%, #0000),
+radial-gradient(1.26vw 1.26vw at 60% 78%, var(--cream2) 98%, #0000),
+radial-gradient(1.98vw 1.62vw at 66% 74%, var(--cream) 98%, #0000),
+radial-gradient(1.26vw 1.26vw at 72% 70%, var(--cream2) 98%, #0000),
+radial-gradient(1.98vw 1.62vw at 78% 65%, var(--cream) 98%, #0000),
+radial-gradient(1.26vw 1.26vw at 84% 58%, var(--cream2) 98%, #0000),
+radial-gradient(1.98vw 1.62vw at 90% 50%, var(--cream) 98%, #0000),
+radial-gradient(1.26vw 1.26vw at 96% 40%, var(--cream2) 98%, #0000);
+  }
+
+  /* ==== Bubble “21” candles ==== */
+  .candles{
+     position: absolute;
+     left:38%;
+  top: -60%;          /* ← adjust this to sit right on the surface */
+  display: flex;
+  gap: 3.2%;
+  }
+  .candle-digit{
+    font-family:"Fredoka", sans-serif;
+    font-weight:900;
+    font-size: clamp(68px, 7vw, 96px);
+    color:#fff; position:relative; display:inline-block;
+    -webkit-text-stroke: 2px #ffffff;
+    text-shadow: 0 0 4px #ccffc3, 0 0 8px #ccffc3, 0 .2vw .6vw rgba(0,0,0,.25);
+    padding: .05em .05em; 
+  }
+  .candle-digit::before{         /* wick */
+    content:""; position:absolute; top:0.12em; left:58%; transform:translateX(-50%);
+    width:.07em; height:.2em; background:#333; border-radius:.2em;
+  }
+  .candle-digit::after{          /* flame */
+    content:""; position:absolute; top:-0.14em; left:58%; transform:translateX(-50%);
+    width:.20em; height:0.32em;
+    background: radial-gradient(circle at 50% 35%, #fff, #ffd166 55%, #ff9f1c 75%, transparent 76%);
+    border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+    filter: drop-shadow(0 0 10px #ffca3a);
+    animation: flicker .12s infinite alternate ease-in-out;
+  }
+  @keyframes flicker{ from{transform:translateX(-50%) scale(1)} to{transform:translateX(calc(-50% + 1px)) scale(1.05)} }
+
+  /* ==== Vouchers ==== */
+  .voucher{
+    position:fixed; inset:0; background:rgba(0,0,0,.6); backdrop-filter:blur(4px);
+    display:none; justify-content:center; align-items:center; z-index:999;
+  }
+  .voucher-inner{ display:flex; flex-direction:column; align-items:center }
+  .voucher-inner img{ width:min(80vw, 420px); border-radius:12px }
+  .closeBtn{
+    margin-top:12px; background:#c7d6e5; border:none; padding:10px 14px;
+    font-weight:600; border-radius:8px; cursor:pointer;
+  }
+
+  /* ==== Confetti (full page) ==== */
+  .confetti{ position:fixed; inset:0; overflow:visible; pointer-events:none; z-index:500 }
+  .confetti i{ position:absolute; top:-10vh; width:8px; height:14px; opacity:.9; background:var(--accent);
+               transform:rotate(15deg); animation: fall linear forwards }
+  @keyframes fall{ to{ transform: translateY(110vh) rotate(360deg) } }
+
+  /* ==== Mobile tweaks ==== */
+  @media (max-width: 480px){
+    h1{ top:12% }
+.candles{
+  top: -80%;          /* ← adjust this to sit right on the surface */
+  }
+  .note{  bottom:-12%; width:100%}
+    .cake-block{ width:76%; height:34%; bottom:5% }
+    .smiski-wrap{
+    bottom:5%;
+  }
+  #avarielleWrap{bottom:5.5%;}
+  }
+
+</style>
+</head>
+<body>
+
+<div class="card">
+
+  <h1>Happy 21st Birthday<br>Aster &amp; Avarielle!</h1>
+
+  <!-- Smiski (left/right) -->
+  <div class="smiski-wrap" id="asterWrap">
+    <img class="smiski" src="smiski-aster.png" alt="Smiski Aster">
+    <span class="sparkles" aria-hidden="true"></span>
+  </div>
+
+  <div class="smiski-wrap" id="avarielleWrap">
+    <img class="smiski" src="smiski-avarielle.png" alt="Smiski Avarielle">
+    <span class="sparkles" aria-hidden="true"></span>
+  </div>
+
+  <!-- Cake -->
+  <div class="cake-block" id="cake">
+    <div class="cake-top"></div>
+
+    <div class="candles">
+      <span class="candle-digit">2</span>
+      <span class="candle-digit">1</span>
+    </div>
+  </div>
+  <p class="note">P.S. click on your own smiskis for a surprise! 😉<br>❤️ from your 芝瑜姐姐 😂</p>
+</div>
+
+
+
+
+<!-- Vouchers -->
+<div id="voucherAster" class="voucher">
+  <div class="voucher-inner">
+    <img src="voucher-aster.png" alt="">
+    <button class="closeBtn" onclick="closeVoucher()">Close</button>
+  </div>
+</div>
+<div id="voucherAvarielle" class="voucher">
+  <div class="voucher-inner">
+    <img src="voucher-avarielle.png" alt="">
+    <button class="closeBtn" onclick="closeVoucher()">Close</button>
+  </div>
+</div>
+
+<div class="confetti" id="confetti"></div>
+
+<script>
+  /* Confetti */
+  const confetti = document.getElementById("confetti");
+  const COLORS = ["#ffd166","#ef476f","#06d6a0","#118ab2","#ffe66d","#b388ff","#9cff9c","#ff9f1c"];
+  function dropConfetti(count=100){
+    const w = window.innerWidth;
+    for(let i=0;i<count;i++){
+      const bit = document.createElement("i");
+      bit.style.left = (Math.random()*w) + "px";
+      bit.style.background = COLORS[i % COLORS.length];
+      bit.style.animationDuration = (3 + Math.random()*3) + "s";
+      confetti.appendChild(bit);
+      setTimeout(()=>bit.remove(), 6500);
+    }
+  }
+  function pointConfetti(x, y, count = 60){
+  for(let i=0;i<count;i++){
+    const bit = document.createElement("i");
+    bit.style.left = x + "px";
+    bit.style.top  = y + "px";
+
+    bit.style.background = COLORS[i % COLORS.length];
+    bit.style.width = "8px";
+    bit.style.height = "14px";
+    bit.style.position = "absolute";
+
+    const dx = (Math.random() - 0.5) * 300;   // horizontal scatter
+    const dy = (Math.random() - 0.5) * 300;   // vertical scatter
+    const duration = 0.4 + Math.random() * 1.2;
+
+    bit.animate(
+      [
+        { transform:`translate(0, 0) rotate(0deg)`, opacity:1 },
+        { transform:`translate(${dx}px, ${dy}px) rotate(360deg)`, opacity:0 }
+      ],
+      {
+        duration: duration * 1000,
+        easing: "ease-out",
+        fill: "forwards"
+      }
+    );
+
+    confetti.appendChild(bit);
+    setTimeout(()=> bit.remove(), duration * 1000 + 50);
+  }
+}
+
+
+  /* Sparkle tap pulse + voucher logic */
+  const aWrap = document.getElementById("asterWrap");
+  const vWrap = document.getElementById("avarielleWrap");
+  const vA = document.getElementById("voucherAster");
+  const vV = document.getElementById("voucherAvarielle");
+
+  function pulse(el){ el.classList.add("glow"); setTimeout(()=>el.classList.remove("glow"), 700); }
+
+  aWrap.addEventListener("pointerdown", ()=>{ pulse(aWrap); vA.style.display="flex"; dropConfetti(); });
+  vWrap.addEventListener("pointerdown", ()=>{ pulse(vWrap); vV.style.display="flex"; dropConfetti(); });
+
+  function closeVoucher(){ vA.style.display="none"; vV.style.display="none"; }
+  window.closeVoucher = closeVoucher; // keep inline onclick working
+
+document.addEventListener("pointerdown", e => {
+  // ignore clicks on voucher close button
+  if (e.target.classList.contains("closeBtn")) return;
+  pointConfetti(e.clientX, e.clientY);
+});
+
+
+</script>
+</body>
+</html>

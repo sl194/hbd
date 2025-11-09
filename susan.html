@@ -553,18 +553,39 @@
   display: none;                              /* JS toggles */
 }
 
- .pc-text{width:100%; font: 600 20px/1.4 Fredoka, system-ui, sans-serif; padding:6px 2px 2px; 
+ .pc-text{width:100%; font: 600 20px/1.4 Fredoka, system-ui, sans-serif; 
+  padding:6px 2px 2px; 
   display:flex;
   flex-direction:column;
 justify-content:center;     /* ⬅ start at the top */
-  align-items:flex-start;
+  align-items:center;
    max-height:100%; 
-overflow:auto; scrollbar-gutter: stable;       /* avoids layout jump when scrollbar appears */
+overflow:auto; 
+position:relative;
+scrollbar-gutter: stable;       /* avoids layout jump when scrollbar appears */
   -webkit-overflow-scrolling: touch; /* smoother on iOS */
 }
 .pc-text > *:first-child { margin-top: 0; } /* no accidental top gap */
 
  .pc-text small{ display:block; margin-top:10px; opacity:.65; font-weight:500 } 
+ /* Inner: content that starts at top when overflowing */
+.pc-text-inner{
+  display:block;
+  width:100%;
+  max-width:100%;
+}
+/* When overflowing, disable centering so top aligns */
+.pc-text:has(.pc-text-inner:overflowing){
+  align-items:flex-start;
+}
+.pc-text.overflowing{
+  align-items:flex-start;
+}
+
+.pc-text.centered {
+  justify-content:center;
+  align-items:center;
+}
  .close{ position:absolute; top:6%; right:6%; background:#222; color:#fff; border:none; padding:10px 12px; border-radius:8px; cursor:pointer; } 
  .close-bottom{ margin-top:22px; padding:10px 16px; font-size:16px; font-weight:600; background:#222; color:#fff; border:none; border-radius:8px; cursor:pointer; position:absolute; bottom:22%; left:50%; transform:translateX(-50%); } 
  
@@ -615,37 +636,38 @@ overflow:auto; scrollbar-gutter: stable;       /* avoids layout jump when scroll
 
 
   /* ==== Mobile tweaks ==== */
-    @media (max-width: 768px)
-    {.pc-text{ font: 600 16px/1.4 Fredoka, system-ui, sans-serif;display:flex;
-  flex-direction:column;
+      @media (max-width: 600px)
+    {.pc-text{ font: 600 16px/1.4 Fredoka, system-ui, sans-serif;
   justify-content:flex-start; overflow:auto; 
   align-items:flex-start;}
-.ifc-text{top:10%;font-size:clamp(8px,1.7vw,12px) }}
+.ifc-text{top:9%;font-size:clamp(3px,1.7vw,7px) }}
+
+    @media (max-width: 768px)
+    {.pc-text{ font: 600 16px/1.4 Fredoka, system-ui, sans-serif;
+  justify-content:flex-start; overflow:auto; 
+  align-items:flex-start;}
+.ifc-text{top:10%;font-size:clamp(4px,1.7vw,8px) }}
 
       @media (max-width: 1024px)
-    {.pc-text{ font: 600 16px/1.4 Fredoka, system-ui, sans-serif;display:flex;
-  flex-direction:column;
+    {.pc-text{ font: 600 16px/1.4 Fredoka, system-ui, sans-serif;
   justify-content:flex-start; overflow:auto; 
   align-items:flex-start;}
 .ifc-text{top:10%;font-size:clamp(14px,1.7vw,20px) }}
 
-      @media (max-width: 1360px)
-    {.pc-text{ font: 600 18px/1.4 Fredoka, system-ui, sans-serif;display:flex;
-  flex-direction:column;
+      @media (max-width: 1440px)
+    {.pc-text{ font: 600 18px/1.4 Fredoka, system-ui, sans-serif;
   justify-content:flex-start; overflow:auto; 
   align-items:flex-start;}
 .ifc-text{top:10%;font-size:clamp(14px,1.7vw,20px) }}
 
      @media (max-width: 1680px)
-    {.pc-text{ font: 600 18px/1.4 Fredoka, system-ui, sans-serif;display:flex;
-  flex-direction:column;
+    {.pc-text{ font: 600 18px/1.4 Fredoka, system-ui, sans-serif;
   justify-content:flex-start; overflow:auto; 
   align-items:flex-start;}
 .ifc-text{top:10%;font-size:clamp(14px,1.7vw,20px) }}
 
        @media (max-width: 1920px)
-    {.pc-text{ font: 600 20px/1.4 Fredoka, system-ui, sans-serif;display:flex;
-  flex-direction:column;
+    {.pc-text{ font: 600 20px/1.4 Fredoka, system-ui, sans-serif;
   justify-content:flex-start; overflow:auto; 
   align-items:flex-start;}
 .ifc-text{top:10%;font-size:clamp(14px,1.7vw,20px) }}
@@ -661,13 +683,12 @@ overflow:auto; scrollbar-gutter: stable;       /* avoids layout jump when scroll
     padding: 12px;
   }
     .headline{font-size:clamp(12px,3.6vw,30px);
-  }flex-start;
+  }
   .sub{top:11%;font-size:clamp(9px,1.7vw,12px) }
-.ifc-text{top:9%;font-size:clamp(4px,1.7vw,8px) }
+.ifc-text{top:9%;font-size:clamp(3px,1.7vw,7px) }
    
     .pc-img{ max-height:100%; width:auto; display: block;}
-    .pc-text{ font: 600 16px/1.4 Fredoka, system-ui, sans-serif;display:flex;
-  flex-direction:column;
+    .pc-text{ font: 600 16px/1.4 Fredoka, system-ui, sans-serif;
   justify-content:flex-start; overflow:auto; 
   align-items:flex-start;}
 
@@ -768,7 +789,9 @@ overflow:auto; scrollbar-gutter: stable;       /* avoids layout jump when scroll
       <img class="pc-img" id="pcImg" alt="">
       <video class="pc-video" id="pcVideo" playsinline controls></video>
       </div>
-      <div class="pc-text" id="pcText"></div>
+      <div class="pc-text" id="pcText">
+        <div class="pc-text-inner"></div>
+      </div>
     </div>
   </div>
   <button class="close-bottom" id="closeModal">Close</button>
@@ -861,7 +884,8 @@ overflow:auto; scrollbar-gutter: stable;       /* avoids layout jump when scroll
   const modal   = document.getElementById('postcardModal');
   const pcImg   = document.getElementById('pcImg');
   const pcVideo = document.getElementById('pcVideo');
-  const pcText  = document.getElementById('pcText');
+const pcText      = document.getElementById("pcText");
+const pcTextInner = pcText.querySelector(".pc-text-inner");
   const closeBtn= document.getElementById('closeModal');
 
   // Load unlimited messages for shooting stars (images or videos)
@@ -887,27 +911,47 @@ function resolveAsset(url){
 }
 
 function openPostcard(url, msg, subs){
-  const resolved = resolveAsset(url);
-  const lower = resolved.toLowerCase();
-  const isVideo = /\.(mp4|mov|webm)(\?|#|$)/.test(lower);
+   if (!url) return;
+
+  const lower = url.toLowerCase();
+  const isVideo = lower.endsWith('.mp4') || lower.endsWith('.mov') || lower.endsWith('.webm');
 
   if (isVideo){
     pcImg.style.display = "none";
     pcVideo.style.display = "block";
-    if (pcVideo.src !== resolved) pcVideo.src = resolved;
+    if (pcVideo.src !== url) pcVideo.src = url;
     pcVideo.currentTime = 0;
     pcVideo.play().catch(()=>{});
   } else {
     try { pcVideo.pause(); } catch(e){}
     pcVideo.style.display = "none";
     pcImg.style.display = "block";
-    pcImg.src = resolved;
+    pcImg.src = url;
   }
 
-  pcText.innerHTML = (msg || '') + `<small>${subs || ''}</small>`;
-  pcText.scrollTop = 0;  
+  pcTextInner.innerHTML = (msg || '') + `<small>${subs || ''}</small>`;
+  // Auto-center logic if text fits
+const textBox = pcText;
+
+requestAnimationFrame(() => {
+  if (textBox.scrollHeight <= textBox.clientHeight + 4) {
+    textBox.classList.add("centered");
+  } else {
+    textBox.classList.remove("centered");
+  }
+});
+
+
   modal.classList.add('open');
   modal.setAttribute('aria-hidden','false');
+
+  updateTextBehavior();   // ✅ RUN THE CHECK HERE
+}
+
+function updateTextBehavior(){
+  pcText.scrollTop = 0;  
+  const overflowing = pcTextInner.scrollHeight > pcText.clientHeight;
+  pcText.classList.toggle("overflowing", overflowing);
 }
 
 
@@ -1030,7 +1074,7 @@ function openPostcard(url, msg, subs){
 const pick = starData[Math.floor(Math.random() * starData.length)];
 star.dataset.url  = pick.url || '';
 star.dataset.msg  = pick.msg || '';
-star.dataset.subs = pick.subs || "With love from your family 💌";
+star.dataset.subs = pick.subs || "With love from Sharmayne 💌";
 
 // clicking opens the postcard
 star.addEventListener('pointerdown', (e)=>{
@@ -1043,7 +1087,6 @@ star.addEventListener('pointerdown', (e)=>{
 
     // cleanup after it finishes flying
     star.addEventListener('animationend', ()=> star.remove());
-
     layer.appendChild(star);
   }
 

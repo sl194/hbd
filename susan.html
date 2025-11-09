@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>生日快樂! 🥳</title>
+<link rel="icon" type="image/png" href="assets/cake.png">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    /* palette tuned to your photo (blue dusk + warm city lights) */
+    --sky-top:#082049;
+    --sky-mid:#0d356d;
+    --sky-bottom:#133e7f;
+    --haze:#0a1530;
+    --water:#092a56;
+    --glow:#1a5bb8;
+    --far:#081a44;
+    --mid:#102a61;
+    --near:#173a7f;
+    --light:#ffd166;
+    --pink:#ff6aa6;
+    --aqua:#60e1ff;
+    --white:#fff;
+    --junk-hull:#2b2b2b;
+    --junk-sail1:#f4522f;
+    --junk-sail2:#ff6a3a;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100svh; display:grid; place-items:center;
+    font-family:"Fredoka",system-ui,-apple-system,"Segoe UI",Arial;
+    color:#fff; background:radial-gradient(160% 130% at 50% 5%, #0f2a66 0%, #070e24 70%, #050914 100%);
+    overflow-x:hidden;
+  }
+
+  /* responsive stage */
+  .card{
+    position:relative; width:min(1100px, 94vw); aspect-ratio:16/9; overflow:hidden; border-radius:16px;
+    box-shadow:0 20px 60px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.06);
+    background:
+      linear-gradient(180deg, var(--sky-top), var(--sky-mid) 45%, var(--sky-bottom) 60%, var(--water) 60%);
+  }
+
+  /* ✨ STARFIELD (twinkling background) */
+.stars{ position:absolute; inset:0; pointer-events:none; z-index:0; height:80%;}
+.star{
+  position:absolute;
+  width:2px; height:2px; border-radius:50%;
+  background:#fff;
+  opacity:.85;
+  filter: drop-shadow(0 0 2px #fff8);
+  animation: starTwinkle var(--twinkle, 2.6s) steps(2, end) infinite;
+}
+.star.dim   { opacity:.55; filter: drop-shadow(0 0 1px #fff6); }
+.star.tint1 { background:#eef; }
+.star.tint2 { background:#ffd; }
+.star.big   { width:3px; height:3px; }
+.star.huge  { width:4px; height:4px; } /* a few bright ones */
+
+@keyframes starTwinkle { 50% { opacity:.35; transform: scale(1.08); } }
+
+
+  /* subtle dusk band near horizon */
+  .sky-band{ position:absolute; inset:0; background:
+    radial-gradient(120% 90% at 50% 60%, rgba(255,170,110,.18), transparent 50%),
+    radial-gradient(160% 120% at 50% 58%, rgba(255,90,160,.14), transparent 50%);
+    mix-blend-mode:screen; pointer-events:none; }
+
+  /* headline */
+  .headline{
+    position:absolute; top:4%; width:100%; text-align:center; z-index:99;
+    font-weight:700; letter-spacing:.3px; text-shadow:0 4px 14px #0007;
+    font-size:clamp(18px,3.6vw,40px);
+  }
+  .sub{ position:absolute; top:13%; width:100%; text-align:center; opacity:.92; z-index:99;
+        font-size:clamp(12px,1.7vw,18px) }
+
+      
+
+  /* layers of skyline */
+  .layer{ position:absolute; left:0; right:0; bottom:31%; height:38%; pointer-events:none; }
+  .far{
+    background:linear-gradient(var(--far),var(--far));
+    clip-path: polygon(
+        /* Left mountain range */
+                0% 100%, 0% 40%, 5% 30%, 10% 35%, 15% 25%, 20% 40%, 
+                25% 20%, 30% 35%, 35% 15%, 40% 30%, 45% 10%, 50% 25%,
+                
+                /* Right mountain range */
+                55% 15%, 60% 30%, 65% 20%, 70% 35%, 75% 25%, 80% 40%,
+                85% 30%, 90% 45%, 95% 35%, 100% 50%, 100% 100%
+    );
+    opacity:.95;
+  }
+  .mid{
+    bottom:31%; height:38%;
+    background:linear-gradient(var(--mid),var(--mid));
+    clip-path: polygon(
+      /* Building 1 - Short rectangular */
+                0% 100%, 0% 60%, 4% 60%, 4% 100%,
+                
+                /* Building 2 - Medium with flat top */
+                5% 100%, 5% 40%, 9% 40%, 9% 100%,
+                
+                /* Building 3 - Tall with antenna */
+                10% 100%, 10% 20%, 14% 20%, 14% 15%, 15% 15%, 15% 10%,
+                16% 10%, 16% 5%, 17% 5%, 17% 100%,
+                
+                /* Building 4 - Stepped design */
+                18% 100%, 18% 50%, 22% 50%, 22% 45%, 26% 45%, 26% 40%,
+                27% 40%, 27% 35%, 28% 35%, 28% 100%,
+                
+                /* Building 5 - Slanted roof */
+                29% 100%, 29% 55%, 33% 55%, 33% 50%, 37% 50%, 37% 45%,
+                38% 45%, 38% 100%,
+                
+                /* Building 6 - Twin towers */
+                39% 100%, 39% 30%, 41% 30%, 41% 25%, 43% 25%, 43% 20%,
+                44% 20%, 44% 100%,
+                
+                /* Building 7 - Curved top */
+                45% 100%, 45% 60%, 49% 60%, 49% 55%, 53% 55%, 53% 50%,
+                54% 50%, 54% 100%,
+                
+                /* Building 8 - Pyramid style */
+                55% 100%, 55% 40%, 59% 40%, 59% 35%, 63% 35%, 63% 30%,
+                64% 30%, 64% 25%, 65% 25%, 65% 100%,
+                
+                /* Building 9 - Modern with cutouts */
+                66% 100%, 66% 45%, 70% 45%, 70% 40%, 74% 40%, 74% 35%,
+                75% 35%, 75% 30%, 76% 30%, 76% 100%,
+                
+                /* Building 10 - Tallest */
+                77% 100%, 77% 15%, 81% 15%, 81% 10%, 85% 10%, 85% 5%,
+                86% 5%, 86% 0%, 87% 0%, 87% 100%,
+                
+                /* Building 11 - Short with details */
+                88% 100%, 88% 65%, 92% 65%, 92% 60%, 96% 60%, 96% 55%,
+                97% 55%, 97% 100%,
+                
+                /* Building 12 - Right edge */
+                98% 100%, 98% 50%, 100% 50%, 100% 100%
+    );
+  }
+  .near{
+    bottom:31%; height:30%;
+    background:linear-gradient(var(--near),var(--near));
+    clip-path: polygon(
+        0% 100%, 0% 40%, 3% 40%, 3% 35%, 6% 35%, 6% 100%,
+    7% 100%, 7% 30%, 10% 30%, 10% 25%, 13% 25%, 13% 100%,
+    14% 100%, 14% 50%, 17% 50%, 17% 45%, 20% 45%, 20% 100%,
+    21% 100%, 21% 20%, 24% 20%, 24% 15%, 27% 15%, 27% 10%, 
+    28% 10%, 28% 5%, 29% 5%, 29% 0%, 30% 0%, 30% 100%,
+    31% 100%, 31% 35%, 34% 35%, 34% 30%, 37% 30%, 37% 100%,
+    38% 100%, 38% 40%, 41% 40%, 41% 35%, 44% 35%, 44% 30%,
+    45% 30%, 45% 25%, 46% 25%, 46% 100%,
+    47% 100%, 47% 45%, 50% 45%, 50% 40%, 53% 40%, 53% 100%,
+    54% 100%, 54% 50%, 57% 50%, 57% 45%, 60% 45%, 60% 40%,
+    61% 40%, 61% 35%, 62% 35%, 62% 100%,
+    63% 100%, 63% 30%, 66% 30%, 66% 25%, 69% 25%, 69% 100%,
+    70% 100%, 70% 15%, 73% 15%, 73% 10%, 76% 10%, 76% 5%,
+    77% 5%, 77% 0%, 78% 0%, 78% 100%,
+    79% 100%, 79% 40%, 82% 40%, 82% 35%, 85% 35%, 85% 100%,
+    86% 100%, 86% 45%, 89% 45%, 89% 40%, 92% 40%, 92% 35%,
+    93% 35%, 93% 30%, 94% 30%, 94% 100%,
+    95% 100%, 95% 50%, 98% 50%, 98% 45%, 100% 45%, 100% 100%
+    );
+  }
+
+  .baserec{position:absolute; left:0; right:0; bottom:0%; height:32%; pointer-events:none;
+   background:linear-gradient(var(--near),var(--near));
+
+  }
+
+.layer.mid::after,
+.layer.near::after{
+  content:"";   position:absolute;
+  inset:6% 0% 0% 0%;
+  background:
+    repeating-linear-gradient(0deg,
+      rgba(255,220,160,.45) 0 2px,
+      transparent 1px 4px
+    ),
+    repeating-linear-gradient(90deg,
+      rgba(180,210,255,.25) 0 1px,
+      transparent .5px 4px
+    );
+  opacity:.35;
+  mix-blend-mode:screen;
+  pointer-events:none;
+}
+.layer.mid::after{ opacity:.35 }
+.layer.near::after{ opacity:.45 }
+
+  /* iconic towers */
+
+/* ---------- Bank of China Tower (left, X-braced) ---------- */
+.boc{
+  position:absolute;
+  left:42%; bottom:-28%;
+  width:4%; height:40%;
+
+  /* night glass face */
+  background: linear-gradient(#274b9a 0%, #1a356f 60%, #0e2249 100%);
+
+  /* body silhouette */
+  clip-path: polygon(
+     48% 0, 58% 6%, 58% 100%,
+     10% 100%, 10% 10%, 22% 6%
+  );
+
+  box-shadow:
+    0 0 18px rgba(191, 224, 255, 0.784) inset,
+    0 0 12px rgba(60,120,220,.25);
+
+  position:relative;
+  overflow:hidden;
+}
+
+/* ✅ repeating criss-cross “X” lattice */
+.boc::before{
+  content:"";
+  position:absolute;
+  inset:7% 0% 0% 0%;
+  right: 30%;
+
+  --line: #bfe0ff;
+  --thick: 1px;
+  --tileH: 14%;
+
+  background:
+    linear-gradient(60deg,
+      transparent calc(50% - var(--thick)),
+      var(--line) 0 calc(50% + var(--thick)),
+      transparent 0
+    ) 0 0 / 100% var(--tileH) repeat-y,
+    linear-gradient(-60deg,
+      transparent calc(50% - var(--thick)),
+      var(--line) 0 calc(50% + var(--thick)),
+      transparent 0
+    ) 0 0 / 100% var(--tileH) repeat-y;
+
+  filter: drop-shadow(0 0 2px rgba(190,230,255,.55));
+  pointer-events:none;
+}
+
+/* ✅ optional faint window glow */
+.boc::after{
+  content:"";
+  position:absolute;
+  inset:6% 6%;
+  background:
+    repeating-linear-gradient(0deg,
+      rgba(255,220,160,.45) 0 2px,
+      transparent 2px 9px
+    ),
+    repeating-linear-gradient(90deg,
+      rgba(180,210,255,.25) 0 1px,
+      transparent 1px 8px
+    );
+  opacity:.35;
+  mix-blend-mode:screen;
+  pointer-events:none;
+}
+
+/* ✅ mast / top antenna */
+.boc > i{
+  display:block;
+  position:absolute;
+  left:50%; top:-3.5%;
+  width:6%; height:12%;
+  transform:translateX(-50%);
+  background:#dff2ff;
+  border-radius:40%/80%;
+  box-shadow:0 0 8px #cfe6ff;
+}
+
+/* ---------- IFC (Two IFC) ---------- */
+.ifc{
+  position:absolute; left:66%; bottom:32%;
+  width:3.4%; height:50%;
+  background: linear-gradient(180deg,#2a5fb2 0%, #1c3e82 55%, #142b60 100%);
+  border-radius:46% 46% 0 0 / 14% 14% 8px 8px;     /* rounded crown */
+   box-shadow:
+    0 0 18px rgba(191, 224, 255, 0.784) inset,
+    0 0 12px rgba(60,120,220,.25);
+  overflow:hidden; cursor:pointer; pointer-events:auto; z-index:9; 
+}
+.ifc::before{ /* crown glow */
+  content:""; position:absolute; left:50%; top:-1%;
+  width:100%; height:8%;
+  transform:translateX(-50%);
+  background:radial-gradient(60% 120% at 50% 100%, #dff2ff, transparent 80%);
+  filter:blur(1px);
+}
+
+/* grid of windows inside IFC */
+.ifc-windows{
+  position:absolute;
+  inset:6% 0% 0% 0%;
+  background:
+    repeating-linear-gradient(0deg,
+      rgba(255,220,160,.45) 0 2px,
+      transparent 2px 9px
+    ),
+    repeating-linear-gradient(90deg,
+      rgba(180,210,255,.25) 0 1px,
+      transparent 1px 8px
+    );
+  opacity:.35;
+  mix-blend-mode:screen;
+  pointer-events:none;
+}
+
+.ifc .ifc-text{
+ position:absolute; top:13%; width:100%; text-align:center; opacity:.92; z-index:99;
+        font-size:clamp(12px,1.7vw,18px); pointer-events:none;   /* clicks go to the .ifc container */
+}
+
+
+/* ---------- Central Plaza (triangular spire) ---------- */
+.central-plaza{
+  position:absolute; left:70%; bottom:32%;
+  width:9%; height:34%;
+  background: linear-gradient(#274b9a 0%, #1a356f 60%, #0e2249 100%);
+  clip-path: polygon(50% 0, 61% 5%, 61% 100%, 39% 100%, 39% 5%);
+  box-shadow:
+    0 0 6px rgba(191, 224, 255, 0.9) inset,
+    0 0 6px rgba(60,120,220,.25);
+}
+.central-plaza::before{
+  content:""; position:absolute; left:50%; top:-7.5%;
+  width:10%; height:15%; transform:translateX(-50%);
+  background:#dff2ff; border-radius:40%/80%; box-shadow:0 0 10px #dff2ff;
+}
+
+
+  /* observation wheel */
+  .wheel{
+    position:absolute; left:23%; bottom:33%;
+    width:12.5%; aspect-ratio:1/1;
+    border: .5vw solid #b9d7ff; border-radius:50%;
+    box-shadow:0 0 0 .22vw rgba(185,215,255,.25), inset 0 0 0 .22vw rgba(185,215,255,.25);
+    transform-origin:50% 50%;
+    animation:spin 68s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg) } }
+
+  .spokes{ position:absolute; inset:0; pointer-events:none; }
+  .spokes i{
+    position:absolute;
+    left:50%; top:98%;
+    width:2.2%; height:95%;
+    background:#b9d7ff; border-radius:999px;
+    transform-origin:50% 50%;
+    translate:-50% -50%;
+    opacity:.95; box-shadow:0 0 2px rgba(185,215,255,.6);
+  }
+  .spokes i:nth-child(1){ transform:translate(-50%,-50%) rotate(0deg); }
+  .spokes i:nth-child(2){ transform:translate(-50%,-50%) rotate(90deg); }
+  .spokes i:nth-child(3){ transform:translate(-50%,-50%) rotate(45deg); }
+  .spokes i:nth-child(4){ transform:translate(-50%,-50%) rotate(-45deg); }
+
+  .wheel .hub{
+    position:absolute; left:50%; top:50%;
+    width:10%; aspect-ratio:1;
+    translate:-50% -50%;
+    background:#ffb7cf; border-radius:50%;
+    box-shadow:0 0 8px rgba(255,183,207,.5);
+  }
+
+  .cabins{ position:absolute; inset:0; pointer-events:none; } /* rotate only */
+  .cabins span{
+    position:absolute; width:8%; height:8%; background:#ffedf6; z-index:10;
+    border:.2vw solid #ff9ac8; border-radius:25%; box-shadow:0 0 10px rgba(255,154,200,.35);
+    transform-origin:50% calc(650%);
+  }
+  .cabins span:nth-child(1){ left:45%; top:-2%;  transform:rotate(0deg) }
+  .cabins span:nth-child(2){ left:45%; top:-1%;  transform:rotate(45deg) }
+  .cabins span:nth-child(3){ left:45%; top:-2%;  transform:rotate(90deg) }
+  .cabins span:nth-child(4){ left:45%; top:-1%;  transform:rotate(135deg) }
+  .cabins span:nth-child(5){ left:45%; top:-2%;  transform:rotate(180deg) }
+  .cabins span:nth-child(6){ left:45%; top:-1%;  transform:rotate(225deg) }
+  .cabins span:nth-child(7){ left:45%;  top:-2%;  transform:rotate(270deg) }
+  .cabins span:nth-child(8){ left:45%; top:-1%;  transform:rotate(315deg) }
+
+  .wheel-centre{position:absolute; left:28%; bottom:41.5%; width:2.5%; aspect-ratio:1/1;
+    background: #8fb7ff; border-radius:50%; filter:brightness(.85)}
+  .wheel-centrepoint{position:absolute; left:28.8%; bottom:42.8%;
+    width:1%; aspect-ratio:1/1; background: #ff9ac8; border-radius:50%; z-index: 6;}
+
+  .wheel-base{ position:absolute; left:23%; bottom:32%; width:12.5%; height:8% }
+  .wheel-base::before,.wheel-base::after{
+    content:""; position:absolute; bottom:0; width:7%; height:160%; background:#8fb7ff;
+    transform-origin:bottom center; filter:brightness(.85)
+  }
+  .wheel-base::before{ left:30%;  transform:skewX(-14deg) }
+  .wheel-base::after{  right:30%; transform:skewX( 14deg) }
+
+  /* windows glow band along horizon (twinkle) */
+  .lights{
+    position:absolute; left:0; right:0; bottom:15%; height:16%;z-index: 6;
+    background:
+      repeating-linear-gradient(90deg, rgba(255,220,160,.9) 0 6px, transparent 6px 10px),
+      repeating-linear-gradient(90deg, rgba(255,150,120,.7) 0 8px, transparent 8px 14px),
+      repeating-linear-gradient(90deg, rgba(180,220,255,.6) 0 5px, transparent 5px 9px);
+    filter: blur(2.2px) drop-shadow(0 0 6px rgba(255,210,160,.6));
+    animation: twinkle 32s linear infinite;
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,.85) 40%, rgba(0,0,0,.35) 75%, rgba(0,0,0,0) 100%);
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,.85) 40%, rgba(0,0,0,.35) 75%, rgba(0,0,0,0) 100%);
+  }
+  @keyframes twinkle{
+    0%{   background-position: 0 0, 0 0, 0 0 }
+    100%{ background-position: -600px 0, -400px 0, -900px 0 }
+  }
+
+  /* water shimmer + reflections */
+  .water{
+    position:absolute; left:0; right:0; bottom:0; height:30%;
+    background: radial-gradient(60% 180% at 50% 140%, rgba(255,255,255,.10), transparent 60%);
+    pointer-events:none;
+  }
+  .water::before{
+    content:""; position:absolute; inset:0; opacity:.35; mix-blend-mode:screen;
+    background: repeating-linear-gradient(to right, rgba(26,91,184,.22) 0 10px, transparent 10px 22px);
+    animation: waveScroll 18s linear infinite;
+  }
+  @keyframes waveScroll { from{background-position:0 0} to{background-position:-300px 0} }
+  .water::after{
+    content:""; position:absolute; inset:0; opacity:.25; mix-blend-mode:screen;
+    background:
+      repeating-linear-gradient(90deg, rgba(255,220,160,.35) 0 2px, transparent 2px 10px),
+      repeating-linear-gradient(90deg, rgba(150,200,255,.25) 0 1px, transparent 1px 8px);
+    filter: blur(1px);
+  }
+
+  /* junk boat */
+  .boat{
+    position:absolute; bottom:14%; left:-22%;
+    width:12%; height:8%; z-index:10; cursor:grab;
+    animation: sail 80s linear infinite, bob 4.8s ease-in-out infinite;
+  }
+  .boat:active{ cursor:grabbing }
+  .boat.paused{ animation-play-state: paused; }
+  @keyframes sail{ from{ transform:translateX(0) } to{ transform:translateX(150vw) } }
+  @keyframes bob{ 0%,100%{ margin-bottom:0 } 50%{ margin-bottom:.8% } }
+
+  .hull{ position:absolute; left:0; right:0; bottom:0; height:48%;
+    background:linear-gradient(#3a3a3a,#1b1b1b); border-radius:0 0 16px 16px;
+    clip-path:polygon(0 0, 80% 0, 100% 100%, 0 100%); box-shadow:0 -2px 0 rgba(255,255,255,.12) inset; }
+  .deck{ position:absolute; left:10%; bottom:48%; width:56%; height:19%; background:#2a2a2a; border-radius:4px 0 0 0 }
+  .sailA, .sailB, .sailC{ position:absolute; bottom:48%; background:linear-gradient(180deg, var(--junk-sail2), var(--junk-sail1));
+    filter: drop-shadow(0 0 10px rgba(255,80,30,.35)); }
+  .sailA{ left:16%; width:22%; height:44%; clip-path:polygon(0 100%, 100% 0, 100% 100%) }
+  .sailB{ left:27%; width:38%; height:82%; clip-path:polygon(0 100%, 100% 20%, 100% 100%) }
+  .sailC{ left:58%; width:14%; height:36%; clip-path:polygon(0 100%, 100% 30%, 100% 100%) }
+
+  .reflection{ position:absolute; left:0; right:0; bottom:-25%; height:38%; opacity:.32; filter:blur(5px);
+    transform: scaleY(-2);
+    background: linear-gradient(180deg, transparent 0 25%, #ff7340 25% 55%, transparent 60%) 40% 0/95% 100% no-repeat; }
+
+  /* footer note */
+  .note{ position:absolute; left:50%; bottom:2.5%; transform:translateX(-50%);
+         font-size:clamp(10px,1.5vw,14px); opacity:.85; text-align:center }
+         
+ /* ===== Modal: envelope + postcard ===== */ 
+ .modal{ position:fixed; inset:0; display:none; place-items:center; z-index:999; background:rgba(0,0,0,.55); backdrop-filter:blur(4px); } 
+ .modal.open{ display:grid } 
+ .mail{ position:relative; width:70vw; height:70vh; display:grid; place-items:center;  --cardH: min(60vh, 520px);} 
+ .envelope{ position:absolute; bottom:8%; width:78%; height:64%; background:#f5e9d6; border-radius:0 0 8px 8px; box-shadow:0 12px 40px rgba(0,0,0,.25); overflow:visible; } 
+ .envelope .body{ position:absolute; inset:0; background:linear-gradient(#f7eddc,#efdcc2); border-radius:8px } 
+ .envelope .flap{ position:absolute; left:0; right:0; top:-60%; height:60%; background:linear-gradient(#f3d7b5,#f7eddc); clip-path: polygon(50% 0, 0 100%, 100% 100%); transition: clip-path 700ms cubic-bezier(.22,.61,.36,1); z-index:3; } 
+
+   .cardPC{
+  position:absolute;
+   bottom:10%; 
+   width:75%; 
+   height:50%; z-index: 4; 
+   gap:18px; padding:16px; 
+   background:#fff; color:#111; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,.25); 
+   transform: translateY(40%); opacity:0; transition: transform .55s .35s ease, opacity .55s .35s ease; 
+  height: var(--cardH);
+  display:grid;
+  grid-template-columns: 1fr 1.2fr;         /* media | text */
+  align-items: stretch;                      /* stretch both columns */
+}
+ .modal.open .cardPC{ transform: translateY(-10%); opacity:1 } 
+ .pc-media{
+  position: relative;
+  width: 100%;
+  height: 100%;                              /* <- locks the media height */
+  overflow: hidden;
+  border-radius: 12px;
+  background: linear-gradient(135deg,#e8f0ff,#ffe7f0);
+}
+ /* Media elements: absolutely fill the frame */
+.pc-img,
+.pc-video{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;                          /* crop to fill */
+  display: none;                              /* JS toggles */
+}
+
+ .pc-text{width:100%; font: 600 20px/1.4 Fredoka, system-ui, sans-serif; padding:6px 2px 2px; 
+  display:flex;
+  flex-direction:column;
+  justify-content:center;} 
+ .pc-text small{ display:block; margin-top:10px; opacity:.65; font-weight:500 } 
+ .close{ position:absolute; top:6%; right:6%; background:#222; color:#fff; border:none; padding:10px 12px; border-radius:8px; cursor:pointer; } 
+ .close-bottom{ margin-top:22px; padding:10px 16px; font-size:16px; font-weight:600; background:#222; color:#fff; border:none; border-radius:8px; cursor:pointer; position:absolute; bottom:22%; left:50%; transform:translateX(-50%); } 
+ 
+
+/* ==== SHOOTING STARS ==== */
+.shooting-layer{
+  position:absolute; inset:0;
+  pointer-events:none;
+  z-index:0;       
+  height:80%;
+  overflow:visible;
+}
+
+/* star body */
+.shooting-star{
+  /* custom props set via JS */
+  --x: 0vw;       /* start X (vw) */
+  --y: -4vh;      /* start Y (vh) */
+  --dx: 60vw;     /* travel X (positive or negative) */
+  --dy: 65vh;     /* travel Y downward */
+  --dur: 22s;     /* slow enough to click */
+  --angle: 20deg; /* rotated to match travel */
+
+  position:absolute;
+  left:var(--x); top:var(--y);
+  width:180px; height:2px;
+  background: linear-gradient(90deg, #fff, rgba(255,255,255,0) 65%);
+  border-radius: 2px;
+  transform: translate(0,0) rotate(var(--angle));
+  filter: drop-shadow(0 0 6px #fff);
+  animation: shoot var(--dur) linear forwards;
+  pointer-events:auto; /* clickable */
+}
+
+/* bigger invisible hit area so it's easy to tap */
+.shooting-star::after{
+  content:""; position:absolute; inset:-10px; border-radius:12px;
+}
+
+@keyframes shoot{
+  to{
+    transform:
+      translate(var(--dx), var(--dy))
+      rotate(var(--angle));
+    opacity:.85;
+  }
+}
+
+
+  /* ==== Mobile tweaks ==== */
+  @media (max-width: 480px){
+    .note{ width:100vw }
+    .mail{ width:90vw; height:30vh; --cardH: min(48vh, 380px); }     
+    .envelope{ width:100%; height:64%; }
+    .cardPC{  width:95%; height:75%;
+    grid-template-columns: 0.6fr 1.4fr;      /* narrower media column */
+    gap: 10px;
+    padding: 12px;
+  }
+    .headline{font-size:clamp(12px,3.6vw,30px);
+  }
+  .sub{top:11%;font-size:clamp(9px,1.7vw,12px) }
+.ifc .ifc-text{top:9%;font-size:clamp(5px,1.7vw,8px) }
+   
+
+
+    .pc-img{ width:100%; height:100%; }
+    .pc-text{ font: 600 16px/1.4 Fredoka, system-ui, sans-serif;display:flex;
+  flex-direction:column;
+  justify-content:center; }
+    .close-bottom{ bottom:32%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+
+  <div class="headline">Dearest Aunty Susan,</div>
+  <div class="sub">Wishing you happiness and good health from 7923 miles away! 🥰</div>
+
+  <!-- twinkling starfield -->
+  <div class="stars" aria-hidden="true"></div>
+  <!-- layer that hosts moving/clickable shooting stars -->
+  <div class="shooting-layer" id="shootingLayer" aria-hidden="true"></div>
+
+  <!-- skyline silhouettes -->
+  <div class="layer far"></div>
+  <div class="layer mid"></div>
+  <div class="layer near"></div>
+    <div class="baserec"></div>
+
+  <!-- landmarks -->
+<div class="boc" aria-label="Bank of China Tower">
+</div>
+
+
+<div class="ifc" id="ifcSign" role="button" tabindex="0" aria-label="Click for a birthday message">
+  <div class="ifc-text">生<br>日<br>快<br>乐<br><br>S<br>U<br>S<br>A<br>N<br>♥</div>
+  <div class="ifc-windows" aria-hidden="true"></div>
+</div>
+
+<div class="central-plaza" aria-hidden="true">
+  <div class="ifc-windows" aria-hidden="true"></div>
+</div>
+
+  <!-- observation wheel -->
+  <div class="wheel" aria-label="Hong Kong Observation Wheel">
+    <div class="spokes"><i></i><i></i><i></i><i></i></div>
+    <div class="hub"></div>
+
+    <div class="cabins">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <div class="wheel-centrepoint" aria-hidden="true"></div>
+  <div class="wheel-centre" aria-hidden="true"></div>
+  <div class="wheel-base" aria-hidden="true"></div>
+
+  <!-- light ribbon on horizon -->
+  <div class="lights" aria-hidden="true"></div>
+
+  <!-- junk boat + sails -->
+  <div class="boat" id="boat" aria-label="Junk boat on Victoria Harbour">
+    <div class="hull"></div>
+    <div class="deck"></div>
+    <div class="sailA"></div>
+    <div class="sailB"></div>
+    <div class="sailC"></div>
+    <div class="reflection"></div>
+  </div>
+
+  <!-- water layers -->
+  <div class="water" aria-hidden="true"></div>
+
+  <!-- sky tint overlays -->
+  <div class="sky-band" aria-hidden="true"></div>
+
+  <div class="note">with much ❤️ from sharmayne<br>p.s. catch the shooting stars for a little surprise! 😉</div>
+</div>
+
+<!-- Modal for the envelope + postcard -->
+<div id="postcardModal" class="modal" aria-hidden="true" role="dialog">
+  <div class="mail">
+    <div class="envelope">
+      <div class="body"></div>
+      <div class="flap"></div>
+    </div>
+    <div class="cardPC" id="pcCard">
+      <div class="pc-media">
+      <img class="pc-img" id="pcImg" alt="">
+      <video class="pc-video" id="pcVideo" playsinline controls></video>
+      </div>
+      <div class="pc-text" id="pcText"></div>
+    </div>
+  </div>
+  <button class="close-bottom" id="closeModal">Close</button>
+</div>
+
+<script type="application/json" id="starMessages">
+[
+ {
+    "url": "assets/tgt.png",
+    "msg": "生日快乐! 愿您身体健康，心想事成，天天开心! 🌟",
+    "subs": "Happiest of birthdays, Aunty Susan! Thank you for always looking out for me — for being the first to travel all the way to the cold countryside of Ithaca just to visit, for showering me with snacks, care, and the funniest jokes, and for being such a wonderful role model in the way you live your life. You’ve taught me so much — to stay grounded, to notice what truly matters, to care for people and for the world, to embrace life alone with grace and courage, and to never stop learning, exploring, and making life colourful. On your special day, I wish you many more years of good health, new adventures, and moments that fill your heart with warmth and joy. Wherever you may be, I hope you always feel at home — and remember that even though you live alone, you are never alone. You are deeply loved, and it’s okay to lean on others too. May you stay happy, healthy, and forever full of life! 💛"
+  },
+  {
+    "url": "assets/door.mp4",
+    "msg": "童心未泯",
+    "subs": "You prove age is just a number 😂 — your youthful spirit and excitement for the world inspire me every day."
+  },
+  {
+    "url": "assets/mirrors.mp4",
+    "msg": "古灵精怪",
+    "subs": "You always turn simple moments into joyful memories — thank you for bringing laughter wherever you go. 😆"
+  },
+  {
+    "url": "assets/hips.mp4",
+    "msg": "活泼可爱",
+    "subs": "Your playful spirit lights up the world — even a silly walk 🐥 becomes a story worth remembering."
+  },
+  {
+    "url": "assets/cny.mp4",
+    "msg": "其乐融融",
+    "subs": "Family time is always brighter with you 🫶 — your warmth brings everyone together."
+  },
+  {
+    "url": "assets/bridge.mp4",
+    "msg": "乐观开朗",
+    "subs": "Even when your knees hurt after a whole day of walking, you still stay positive and playful! 🥹"
+  },
+  {
+    "url": "assets/swan.mp4",
+    "msg": "笑口常开",
+    "subs": "Only you can make an ordinary meal feel like a mini comedy show 🤪 — and I love it."
+  },
+  {
+    "url": "assets/posing.mp4",
+    "msg": "开朗洒脱",
+    "subs": "Unashamedly yourself 🔥 — your confidence and unique charm are qualities I hope to grow into too."
+  },
+  {
+    "url": "assets/ipman.mp4",
+    "msg": "活力四射",
+    "subs": "You’re a ball of energy — always learning something new and chasing your next adventure! 🚀"
+  },
+  {
+    "url": "assets/ipman.gif",
+    "msg": "幽默风趣",
+    "subs": "You always make me laugh 🤣 — your energy makes every place more fun."
+  },
+  {
+    "url": "assets/tanghulu.gif",
+    "msg": "甜甜蜜蜜",
+    "subs": "May your life moving forward be like tanghulu 🍡 — crisp, sweet, and full of small moments that make you smile."
+  },
+  {
+    "url": "assets/hotel.gif",
+    "msg": "天生丽质",
+    "subs": "You shine wherever you go 💃 — hotels, museums, streets; you light up the scene."
+  },
+  {
+    "url": "assets/mall.gif",
+    "msg": "平易近人",
+    "subs": "You’re always so down-to-earth and humble — thank you for teaching me the value of staying grounded. 🧘‍♀️"
+  }
+
+]
+</script>
+
+
+<script>
+  /* ===== Boat: press & hold to pause ===== */
+  const boat = document.getElementById('boat');
+  const setPaused = (p) => boat.classList.toggle('paused', p);
+  boat.addEventListener('pointerdown', () => setPaused(true));
+  window.addEventListener('pointerup', () => setPaused(false));
+  window.addEventListener('pointercancel', () => setPaused(false));
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') setPaused(false);
+  });
+
+  /* ===== Modal / Postcard ===== */
+  const modal   = document.getElementById('postcardModal');
+  const pcImg   = document.getElementById('pcImg');
+  const pcVideo = document.getElementById('pcVideo');
+  const pcText  = document.getElementById('pcText');
+  const closeBtn= document.getElementById('closeModal');
+
+  // Load unlimited messages for shooting stars (images or videos)
+let starData = [];
+try {
+  const raw = document.getElementById('starMessages')?.textContent || '[]';
+  starData = JSON.parse(raw);
+} catch (e) {
+  console.warn('starMessages JSON parse failed:', e);
+}
+if (!Array.isArray(starData) || starData.length === 0) {
+  // Fallback so things still work if JSON is missing
+  starData = [
+    // { url: "https://picsum.photos/seed/11/600/400", msg: "Happy Birthday!", subs: "With love 💌" }
+      { url: "assets/tgt.png", msg: "Happy Birthday!", subs: "With love 💌" }
+  ];
+}
+
+function resolveAsset(url){
+  if (!url) return "";
+  if (/^(data:|https?:|blob:)/i.test(url)) return url; // absolute stays
+  return new URL(url, document.baseURI).href;          // resolve relative
+}
+
+function openPostcard(url, msg, subs){
+  const resolved = resolveAsset(url);
+  const lower = resolved.toLowerCase();
+  const isVideo = /\.(mp4|mov|webm)(\?|#|$)/.test(lower);
+
+  if (isVideo){
+    pcImg.style.display = "none";
+    pcVideo.style.display = "block";
+    if (pcVideo.src !== resolved) pcVideo.src = resolved;
+    pcVideo.currentTime = 0;
+    pcVideo.play().catch(()=>{});
+  } else {
+    try { pcVideo.pause(); } catch(e){}
+    pcVideo.style.display = "none";
+    pcImg.style.display = "block";
+    pcImg.src = resolved;
+  }
+
+  pcText.innerHTML = (msg || '') + `<small>${subs || ''}</small>`;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden','false');
+}
+
+
+ function closePostcard(){
+  try {
+    pcVideo.pause();
+    // clear src to fully stop download on iOS/Safari
+    pcVideo.removeAttribute('src');
+    pcVideo.load();
+  } catch(e){}
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden','true');
+}
+
+
+  closeBtn.addEventListener('click', (e)=>{ e.stopPropagation(); closePostcard(); });
+  modal.addEventListener('click', (e)=>{ if (!e.target.closest('.mail')) closePostcard(); });
+
+  // Click "生日快乐" on the IFC to open the first star message
+(() => {
+  const ifc = document.getElementById('ifcSign');
+  if (!ifc) return;
+
+  const openFirst = () => {
+    const first = Array.isArray(starData) && starData.length ? starData[0] : null;
+    if (!first) return;
+    openPostcard(first.url, first.msg, first.subs || 'With love 💌');
+  };
+
+  ifc.addEventListener('click', openFirst);
+  // keyboard accessibility
+  ifc.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openFirst(); }
+  });
+})();
+
+
+
+   // ---------- Dense twinkling stars ----------
+  const starsLayer = document.querySelector('.stars');
+
+  function sprinkleStars(count = 220){
+    const w = starsLayer.clientWidth  || window.innerWidth;
+    const h = starsLayer.clientHeight || window.innerHeight;
+
+    // clear previous (if you re-call)
+    starsLayer.innerHTML = '';
+
+    for(let i=0;i<count;i++){
+      const s = document.createElement('i');
+      s.className = 'star';
+
+      // a few size/color variants
+      const r = Math.random();
+      if (r < 0.08) s.classList.add('huge');
+      else if (r < 0.22) s.classList.add('big');
+
+      if (Math.random() < 0.33) s.classList.add('tint1');
+      else if (Math.random() < 0.5) s.classList.add('tint2');
+      if (Math.random() < 0.35) s.classList.add('dim');
+
+      // position: bias to top half of sky (above horizon ~60%)
+      const x = Math.random() * 100;               // 0–100 vw %
+      const y = Math.pow(Math.random(), 1.4) * 56; // bias upward, 0–56% (sky area)
+      s.style.left = x + '%';
+      s.style.top  = y + '%';
+
+      // twinkle timing randomized
+      const dur  = (1.8 + Math.random()*2.2).toFixed(2) + 's';
+      const dlay = (Math.random()*2.2).toFixed(2) + 's';
+      s.style.setProperty('--twinkle', dur);
+      s.style.animationDelay = dlay;
+
+      starsLayer.appendChild(s);
+    }
+  }
+
+  // call once on load
+  sprinkleStars(320);  // << increase this number for even more stars
+
+  // make sure stars adapt on resize/orientation change (debounced)
+  let starResizeTO;
+  window.addEventListener('resize', ()=>{
+    clearTimeout(starResizeTO);
+    starResizeTO = setTimeout(()=>sprinkleStars(320), 150);
+  });
+
+  /* ===== Shooting stars ===== */
+ const layer = document.getElementById('shootingLayer');
+
+  function spawnShootingStarOnce(){
+    const star = document.createElement('div');
+    star.className = 'shooting-star';
+
+    // start somewhere near the top (within top 8–20vh)
+    const startYvh = 3 + Math.random()*12;           // 8–20vh
+    const startXvw = 10 + Math.random()*80;          // 10–90vw
+
+    // pick a diagonal direction
+    // const dir = Math.random() < 0.5 ? -1 : -1;        // left or right
+    const dir = -1;        // forced to come from right
+    const travelXvw = 40 + Math.random()*30;         // 40–70vw
+    const travelYvh = 60 + Math.random()*14;         // 60–74vh (downward)
+
+    // speed: slow enough to tap
+    const dur = (10 + Math.random()*4).toFixed(2) + 's';
+
+    // angle to roughly match the diagonal
+    const angleDeg = (dir > 0 ? 1 : -1) * (15 + Math.random()*10); // ~15–25°
+
+    // write CSS variables
+    star.style.setProperty('--x',  startXvw + 'vw');
+    star.style.setProperty('--y',  startYvh + 'vh');
+    star.style.setProperty('--dx', (dir * travelXvw) + 'vw');
+    star.style.setProperty('--dy', travelYvh + 'vh');
+    star.style.setProperty('--dur', dur);
+    star.style.setProperty('--angle', angleDeg + 'deg');
+
+    // pick a random message for this star
+const pick = starData[Math.floor(Math.random() * starData.length)];
+star.dataset.url  = pick.url || '';
+star.dataset.msg  = pick.msg || '';
+star.dataset.subs = pick.subs || "With love from your family 💌";
+
+// clicking opens the postcard
+star.addEventListener('pointerdown', (e)=>{
+  e.stopPropagation();
+  openPostcard(star.dataset.url, star.dataset.msg, star.dataset.subs);
+  star.remove();
+});
+
+
+
+    // cleanup after it finishes flying
+    star.addEventListener('animationend', ()=> star.remove());
+
+    layer.appendChild(star);
+  }
+
+  // spawn one immediately, then once every 10s
+
+ let starTimer = null;
+function startStars(){
+  if (starTimer) return;
+  spawnShootingStarOnce();                 // one immediately
+  starTimer = setInterval(spawnShootingStarOnce, 10000); // then every 10s
+}
+function stopStars(){
+  if (!starTimer) return;
+  clearInterval(starTimer);
+  starTimer = null;
+}
+
+// start on load
+startStars();
+
+// pause spawns while modal is open (so clicks don’t get messy)
+const observer = new MutationObserver(()=>{
+  const open = modal.classList.contains('open');
+  if (open) stopStars(); else startStars();
+});
+observer.observe(modal, { attributes:true, attributeFilter:['class'] });
+
+
+  // (If you prefer fixed messages per star)
+  // // Option A: choose specific index
+  // const order = [0,3,5,1,7,2,6,4]; let idx=0;
+  // function spawnShootingStar(){
+  //   const star = document.createElement('div');
+  //   star.className = 'shooting-star';
+  //   // ... same position/angle/duration setup ...
+  //   const pick = cabinData[order[idx % order.length]];
+  //   idx++;
+  //   star.dataset.img  = pick.img;
+  //   star.dataset.msg  = pick.msg;
+  //   star.dataset.subs = pick.subs;
+  //   // ... same listeners ...
+  //   layer.appendChild(star);
+  // }
+
+</script>
+</body>
+</html>

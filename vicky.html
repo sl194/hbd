@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Happy Birthday Vicky!</title>
+<link rel="icon" type="image/png" href="assets/cake.png">
+<style>
+  :root{
+    --bg:#0f1021;
+    --text:#fff;
+    --cake:#a86a3c;           /* chocolate cake body */
+    --cake-shade:#8e5732;
+    --cream:#fff5ea;          /* whipped cream */
+    --flower:#ff675f;         /* red flowers */
+    --flower-center:#ffd166;
+    --blush:#ffb3c7;
+    --accent:#ffd166;         /* confetti base */
+    --shadow: rgba(0,0,0,.25);
+  }
+
+  body{
+    margin:0; min-height:100svh; display:grid; place-items:center;
+    background:
+      radial-gradient(1000px 480px at 90% -10%, #623cea22, transparent 60%),
+      radial-gradient(700px 420px at 10% 120%, #06d6a022, transparent 60%),
+      var(--bg);
+    color:var(--text);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Inter, Roboto, Arial;
+    overflow:hidden;
+  }
+
+  .scene{ position:relative; width:min(560px,92vw); aspect-ratio: 16/11; display:grid; place-items:center; }
+  .headline{ position:absolute; top:4%; width:100%; text-align:center; opacity:0; transform:translateY(-10px);
+    animation: fadeSlide .9s .25s forwards ease-out; padding:0 .5rem}
+  .headline h1{ margin:.2rem 0 0; font-size:clamp(22px,4.2vw,40px); font-weight:800; text-shadow:0 6px 20px #0007}
+  .headline .sub{ font-size:clamp(12px,2.2vw,16px); opacity:.85 }
+
+  /* --- Cake Stage --- */
+  .stage{ position:relative; width:min(440px,90%); height:100%; display:grid; place-items:end center; }
+
+  .cake-wrap{
+    position:absolute; bottom:26px; width:min(340px,82%); display:grid; place-items:center;
+    filter: drop-shadow(0 10px 20px var(--shadow));
+    transform: translateY(20px) scale(.98);
+    opacity:0; animation: rise .9s .45s forwards cubic-bezier(.2,.9,.2,1.1);
+  }
+
+  /* Cylindrical cake body */
+  .cake{
+    position:relative; width:100%; height:200px; border-radius:20px;
+    background: linear-gradient(#b97a48, var(--cake));
+    box-shadow: inset 0 -22px 0 var(--cake-shade);
+  }
+  /* rounded top */
+ .cake::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:-5px;                  /* move slightly upward */
+  transform:translateX(-50%);
+  width:100%;                 /* slightly wider */
+  height:26px;                /* flatter */
+  border-radius: 999px / 100%; /* oval: wide + shallow */
+  background: linear-gradient(#79492b, #9f5518);
+
+}
+
+  /* whipped-cream dollops + flowers drawn with layered radial-gradients */
+  .topping{
+    position:absolute; left:50%; top:-30px; transform:translateX(-50%);
+    width:100%; height:100px; pointer-events:none;
+    background:
+      /* flowers (petals via clustered dots) */
+           /* most left */
+radial-gradient(7px 7px  at 8% 62%, var(--flower-center) 98%, #0000),
+      radial-gradient(12px 10px at 8% 53%, var(--flower) 98%, #0000), /* top */
+radial-gradient(12px 10px at 4% 61%, var(--flower) 98%, #0000), /* upper-left */
+radial-gradient(12px 10px at 6% 71%, var(--flower) 98%, #0000), /* lower-left */
+radial-gradient(12px 10px at 10% 71%, var(--flower) 98%, #0000), /* lower-right */
+radial-gradient(12px 10px at 12% 61%, var(--flower) 98%, #0000), /* upper-right */
+
+      /* middle left */
+radial-gradient(7px 7px  at 20% 37%, var(--flower-center) 98%, #0000),
+      radial-gradient(12px 10px at 20% 28%, var(--flower) 98%, #0000), /* top */
+radial-gradient(12px 10px at 16% 36%, var(--flower) 98%, #0000), /* upper-left */
+radial-gradient(12px 10px at 18% 46%, var(--flower) 98%, #0000), /* lower-left */
+radial-gradient(12px 10px at 22% 46%, var(--flower) 98%, #0000), /* lower-right */
+radial-gradient(12px 10px at 24% 36%, var(--flower) 98%, #0000), /* upper-right */
+  
+      /* left */
+radial-gradient(7px 7px  at 35% 47%, var(--flower-center) 98%, #0000),
+      radial-gradient(12px 10px at 35% 38%, var(--flower) 98%, #0000), /* top */
+radial-gradient(12px 10px at 31% 46%, var(--flower) 98%, #0000), /* upper-left */
+radial-gradient(12px 10px at 33% 56%, var(--flower) 98%, #0000), /* lower-left */
+radial-gradient(12px 10px at 37% 56%, var(--flower) 98%, #0000), /* lower-right */
+radial-gradient(12px 10px at 39% 46%, var(--flower) 98%, #0000), /* upper-right */
+
+      /* right */
+radial-gradient(7px 7px  at 60% 50%, var(--flower-center) 98%, #0000),
+      radial-gradient(12px 10px at 60% 41%, var(--flower) 98%, #0000), /* top */
+radial-gradient(12px 10px at 56% 49%, var(--flower) 98%, #0000), /* upper-left */
+radial-gradient(12px 10px at 58% 59%, var(--flower) 98%, #0000), /* lower-left */
+radial-gradient(12px 10px at 62% 59%, var(--flower) 98%, #0000), /* lower-right */
+radial-gradient(12px 10px at 64% 49%, var(--flower) 98%, #0000), /* upper-right */
+     
+       /*  middle right */
+          radial-gradient(7px 7px  at 75% 37%, var(--flower-center) 98%, #0000) ,
+     radial-gradient(12px 10px at 75% 28%, var(--flower) 98%, #0000), /* top */
+radial-gradient(12px 10px at 79% 36%, var(--flower) 98%, #0000), /* upper-right */
+radial-gradient(12px 10px at 77% 46%, var(--flower) 98%, #0000), /* lower-right */
+radial-gradient(12px 10px at 73% 46%, var(--flower) 98%, #0000), /* lower-left */
+radial-gradient(12px 10px at 71% 36%, var(--flower) 98%, #0000), /* upper-left */
+   
+  /* most right */
+radial-gradient(7px 7px  at 88% 62%, var(--flower-center) 98%, #0000),
+      radial-gradient(12px 10px at 88% 53%, var(--flower) 98%, #0000), /* top */
+radial-gradient(12px 10px at 84% 61%, var(--flower) 98%, #0000), /* upper-left */
+radial-gradient(12px 10px at 86% 71%, var(--flower) 98%, #0000), /* lower-left */
+radial-gradient(12px 10px at 90% 71%, var(--flower) 98%, #0000), /* lower-right */
+radial-gradient(12px 10px at 92% 61%, var(--flower) 98%, #0000), /* upper-right */
+
+      /* cream dollops */
+      radial-gradient(24px 28px at 12% 58%, var(--cream) 98%, #0000),
+      radial-gradient(26px 30px at 24% 52%, var(--cream) 98%, #0000),
+      radial-gradient(24px 28px at 36% 56%, var(--cream) 98%, #0000),
+      radial-gradient(26px 30px at 48% 50%, var(--cream) 98%, #0000),
+      radial-gradient(24px 28px at 60% 54%, var(--cream) 98%, #0000),
+      radial-gradient(26px 30px at 72% 50%, var(--cream) 98%, #0000),
+      radial-gradient(24px 28px at 84% 56%, var(--cream) 98%, #0000),
+      radial-gradient(24px 28px at 18% 40%, var(--cream) 98%, #0000),
+      radial-gradient(26px 30px at 4% 56%, var(--cream) 98%, #0000),
+      radial-gradient(24px 28px at 96% 50%, var(--cream) 98%, #0000),
+      radial-gradient(24px 28px at 66% 36%, var(--cream) 98%, #0000),
+
+       radial-gradient(24px 28px at 12% 48%, var(--cream) 98%, #0000),
+      radial-gradient(26px 30px at 24% 42%, var(--cream) 98%, #0000),
+      radial-gradient(24px 28px at 36% 46%, var(--cream) 98%, #0000),
+      radial-gradient(26px 30px at 48% 40%, var(--cream) 98%, #0000),
+      radial-gradient(24px 28px at 60% 44%, var(--cream) 98%, #0000),
+      radial-gradient(26px 30px at 72% 40%, var(--cream) 98%, #0000),
+      radial-gradient(24px 28px at 84% 46%, var(--cream) 98%, #0000),
+      radial-gradient(24px 28px at 18% 30%, var(--cream) 98%, #0000),
+      radial-gradient(26px 30px at 4% 46%, var(--cream) 98%, #0000),
+      radial-gradient(24px 28px at 96% 40%, var(--cream) 98%, #0000),
+      radial-gradient(24px 28px at 66% 29%, var(--cream) 98%, #0000);
+
+  }
+ 
+  /* cute feet */
+  .foot{
+    position:absolute; bottom:-12px; width:46px; height:34px; background:linear-gradient(#79492b, #653a22);
+    border-radius:40px; transform:rotate(14deg); box-shadow:0 6px 0 #00000010;
+  }
+  .foot.left{ left:64px; transform:rotate(18deg) }
+  .foot.right{ right:64px; transform:rotate(-18deg) }
+
+  /* smiley face */
+  .face{
+    position:absolute; left:50%; bottom:48px; transform:translateX(-50%); width:160px; height:60px;
+  }
+  .eye, .eye::after{
+    position:absolute; top:0; width:12px; height:12px; background:#2b1a12; border-radius:50%;
+    box-shadow: 0 0 0 2px #00000008 inset;
+  }
+  .eye.left{ left:36px }
+  .eye.right{ right:36px }
+  .blush{ position:absolute; top:15px; width:16px; height:16px; background:var(--blush); border-radius:50%; opacity:.9 }
+  .blush.left{ left:12px }
+  .blush.right{ right:12px }
+  .smile{
+    position:absolute; left:50%; top:-8px; width:64px; height:34px; transform:translateX(-50%);
+    border:6px solid #2b1a12; border-top-color:#0000; border-left-color:#0000; border-right-color:#0000;
+    border-radius:0 0 60px 60px; clip-path:inset(-10px 0 0 0);
+  }
+
+  /* candle (center) */
+  .candle{
+    position:absolute; left:50%; top:-44px; transform:translateX(-50%);
+    width:20px; height:64px; border-radius:10px;
+    background:
+      repeating-linear-gradient(135deg, #ff8ab3 0 10px, #ffd1e0 10px 20px);
+    box-shadow: inset 0 -6px 0 #ffffff88, 0 2px 0 #00000010;
+  }
+  .candle::after{ /* wick */
+    content:""; position:absolute; top:-10px; left:50%; transform:translateX(-50%);
+    width:4px; height:12px; background:#2d2d2d; border-radius:2px;
+  }
+  .flame{
+    position:absolute; top:-26px; left:50%; transform:translateX(-50%);
+    width:16px; height:24px; border-radius:10px 10px 10px 10px / 13px 13px 9px 9px;
+    background: radial-gradient(circle at 50% 35%, #fff, #ffd166 55%, #ff9f1c 75%, #0000 76%);
+    filter: drop-shadow(0 0 10px #ffca3a);
+    animation: flicker .12s infinite alternate ease-in-out;
+  }
+
+  /* Confetti layer */
+ .confetti{
+  position: fixed;     /* instead of absolute */
+  inset: 0;            /* top:0; right:0; bottom:0; left:0; */
+  pointer-events: none;
+  overflow: visible;   /* important */
+  z-index: 99999;      /* above everything */
+}
+
+  .confetti i{
+    position:absolute; top:-10vh; width:8px; height:14px; opacity:.9; background: var(--accent);
+    transform: rotate(15deg); animation: fall linear forwards;
+  }
+
+  /* Animations */
+  @keyframes fadeSlide{ from{opacity:0; transform:translateY(-12px)} to{opacity:1; transform:translateY(0)} }
+  @keyframes popIn{ from{opacity:0; transform:translateY(20px) scale(.85)} to{opacity:1; transform:translateY(0) scale(1)} }
+  @keyframes rise{
+    0% {opacity:0; transform: translateY(40px) scale(.95)}
+    60%{opacity:1}
+    100%{opacity:1; transform: translateY(0) scale(1)}
+  }
+  @keyframes flicker{ from{ transform: translateX(-50%) scale(1) } to{ transform: translateX(calc(-50% + 1px)) scale(1.05) } }
+  @keyframes fall{ to{ transform: translateY(110vh) rotate(360deg) } }
+
+  .footer{ position:absolute; bottom:-48px; width:100%; text-align:center; font-size:12px; opacity:.6 }
+
+ 
+  @media (max-width: 480px) {
+    .cake{ height:160px }
+    .face{ bottom:46px }
+  .headline {
+    top: -10%;
+    transform:translateY(-50px);
+    padding-bottom: 10rem;
+  }
+  .stage {
+    margin-top: 2rem;
+  }
+    .footer{ 
+        position:absolute; 
+        bottom:-48px; }
+
+.face {
+    bottom: 38px;         /* was 48px → moved DOWN by 20px */
+  }
+
+  .eye, 
+  .eye::after {
+    top: 10px;            /* was 0px → moved down */
+  }
+
+  .blush {
+    top: 25px;            /* was 15px → moved down */
+  }
+
+  .smile {
+    top: 2px;            /* was -8px → moved down */
+  }
+
+}
+</style>
+</head>
+<body>
+  <div class="scene" role="img" aria-label="Cute round chocolate cake with a candle, cream dollops and flowers, smiling face and feet">
+    <div class="headline" aria-live="polite">
+      <div class="sub">🎉 Surprise!</div>
+      <h1 id="title">Happy 25th Birthday, Vicky!</h1>
+    </div>
+
+    <div class="stage">
+      <div class="cake-wrap" aria-hidden="true">
+        <div class="cake">
+          <div class="topping"></div>
+          <div class="candle"><span class="flame" aria-hidden="true"></span></div>
+          <div class="face">
+            <span class="eye left"></span>
+            <span class="eye right"></span>
+            <span class="smile"></span>
+            <span class="blush left"></span>
+            <span class="blush right"></span>
+          </div>
+          <div class="foot left"></div>
+          <div class="foot right"></div>
+        </div>
+      </div>
+      <div class="plate"></div>
+    </div>
+
+    <div class="confetti" id="confetti"></div>
+    <div class="footer">
+      <p>made with ❤️ with some code hehe<br>
+  p.s. open in
+  <a href="" id="openBrowserLink">browser</a>
+  for confetti! 🎉
+</p>
+</div>
+
+  </div>
+
+<script>
+  // Confetti
+  const confetti = document.getElementById("confetti");
+  const COLORS = ["#ffd166","#ef476f","#06d6a0","#118ab2","#ffe66d","#b388ff","#9cff9c","#ff9f1c"];
+  function dropConfetti(count=100){
+    const w = window.innerWidth;
+    for(let i=0;i<count;i++){
+      const bit = document.createElement("i");
+      const left = Math.random()*w;
+      const dur = 3 + Math.random()*3;
+      const delay = Math.random()*0.8;
+      const size = 6 + Math.random()*10;
+      bit.style.left = left+"px";
+      bit.style.width = (size*.6)+"px";
+      bit.style.height = size+"px";
+      bit.style.background = COLORS[i % COLORS.length];
+      bit.style.animationDuration = dur+"s";
+      bit.style.animationDelay = delay+"s";
+      bit.style.opacity = (0.7 + Math.random()*0.3).toFixed(2);
+      bit.style.borderRadius = (Math.random()<0.5? "2px":"50%");
+      confetti.appendChild(bit);
+      setTimeout(()=>bit.remove(), (dur+delay)*1000);
+    }
+  }
+  // initial burst after cake appears
+  setTimeout(()=>dropConfetti(120), 1100);
+  // click anywhere on the cake area to celebrate again 🎊
+const trigger = document.querySelector(".stage");
+trigger.addEventListener("click", () => dropConfetti(60));        // desktop
+trigger.addEventListener("touchstart", () => dropConfetti(60));   // mobile
+trigger.addEventListener("pointerdown", () => dropConfetti(60));  // covers most
+
+document.getElementById("openBrowserLink").href = window.location.href;
+
+</script>
+</body>
+</html>

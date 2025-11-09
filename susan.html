@@ -556,8 +556,14 @@
  .pc-text{width:100%; font: 600 20px/1.4 Fredoka, system-ui, sans-serif; padding:6px 2px 2px; 
   display:flex;
   flex-direction:column;
-  justify-content:center;
-overflow:auto;} 
+justify-content:center;     /* ⬅ start at the top */
+  align-items:flex-start;
+   max-height:100%; 
+overflow:auto; scrollbar-gutter: stable;       /* avoids layout jump when scrollbar appears */
+  -webkit-overflow-scrolling: touch; /* smoother on iOS */
+}
+.pc-text > *:first-child { margin-top: 0; } /* no accidental top gap */
+
  .pc-text small{ display:block; margin-top:10px; opacity:.65; font-weight:500 } 
  .close{ position:absolute; top:6%; right:6%; background:#222; color:#fff; border:none; padding:10px 12px; border-radius:8px; cursor:pointer; } 
  .close-bottom{ margin-top:22px; padding:10px 16px; font-size:16px; font-weight:600; background:#222; color:#fff; border:none; border-radius:8px; cursor:pointer; position:absolute; bottom:22%; left:50%; transform:translateX(-50%); } 
@@ -626,7 +632,21 @@ overflow:auto;}
     .pc-img{ max-height:100%; width:auto; display: block;}
     .pc-text{ font: 600 16px/1.4 Fredoka, system-ui, sans-serif;display:flex;
   flex-direction:column;
-  justify-content:flex-start; overflow:auto; }
+  justify-content:flex-start; overflow:auto; 
+  align-items:flex-start;}
+
+  .star{
+  width:1px; height:1px; border-radius:50%;
+  background:#fff;
+  opacity:.85;
+  filter: drop-shadow(0 0 1px #fff8);
+  animation: starTwinkle var(--twinkle, 2.6s) steps(2, end) infinite;
+}
+.star.dim   { opacity:.55; filter: drop-shadow(0 0 .5px #fff6); }
+.star.tint1 { background:#eef; }
+.star.tint2 { background:#ffd; }
+.star.big   { width:1.5px; height:1.5px; }
+.star.huge  { width:2px; height:2px; } /* a few bright ones */
 
     .close-bottom{ bottom:32%; }
   }
@@ -849,6 +869,7 @@ function openPostcard(url, msg, subs){
   }
 
   pcText.innerHTML = (msg || '') + `<small>${subs || ''}</small>`;
+  pcText.scrollTop = 0;  
   modal.classList.add('open');
   modal.setAttribute('aria-hidden','false');
 }
